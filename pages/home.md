@@ -40,48 +40,57 @@ AND period_type = 'day'
 /%}
 
 
-
-```sql mau_qaf_trend
+```sql active_users
 SELECT
-    c.period_identifier,
-    c.active_children as monthly_active_children,
-    f.active_families as quarterly_active_families
+    c.period_end_date,
+    c.active_children,
+    f.active_families
 FROM (
-    SELECT period_identifier, sum(active_children) as active_children
+    SELECT period_end_date, sum(active_children) as active_children
     FROM active_children
     WHERE period_type = {{date_grain}}
-    GROUP BY period_identifier
+    GROUP BY period_end_date
 ) c
 LEFT JOIN (
-    SELECT period_identifier, sum(active_families) as active_families
+    SELECT period_end_date, sum(active_families) as active_families
     FROM active_families
     WHERE period_type = {{date_grain}}
-    GROUP BY period_identifier
-) f ON c.period_identifier = f.period_identifier
-ORDER BY c.period_identifier
+    GROUP BY period_end_date
+) f ON c.period_end_date = f.period_end_date
+ORDER BY c.period_end_date
 ```
 
-{% line_chart
-    data="mau_qaf_trend"
-    x="period_identifier"
-    y="max(monthly_active_children)"
-    y2="max(quarterly_active_families)"
+{% combo_chart
+    data="active_users"
+    x="period_end_date"
+    title="Active users"
+    date_range={
+        date="period_end_date"
+        range="{{time_range}}"
+    }
+%}
+
+{% line
+    y="sum(active_children)"
+    options={
+        width=3
+    }
     data_labels={
-        position="above"
+        position="left"
     }
-    y2_axis_options={
-        labels=false
-        gridlines=false
-        title=""
-    }
-    y_axis_options={
-        ticks=false
-        gridlines=false
-        title=""
-    }
-    title="Growth Trend"
-    subtitle="Monthly Active Children vs Quarterly Active Families"
 /%}
+{% line
+    y="sum(active_families)"
+    options={
+        opacity=0.4
+        markers={
+            shape="none"
+        }
+        type="dashed"
+    }
+/%}
+
+{% /combo_chart %}
 
 ```sql new_parents
 SELECT
@@ -105,12 +114,11 @@ SELECT
     CASE WHEN is_period_complete THEN active_users END AS active_users_confirmed,
     CASE WHEN is_period_complete THEN cohort_size END AS cohort_size_confirmed
 FROM month_n_retention
-ORDER BY cohort_date
 ```
 
+## New partner parents
+
 {% row  %}
-
-
 
 {% line_chart
     data="new_parents"
@@ -122,6 +130,12 @@ ORDER BY cohort_date
     date_grain={{date_grain}}
 /%}
 
+{% /row %}
+
+## New Parent Conversion rate
+
+{% row  %}
+
 {% line_chart
     data="conversion_rate"
     x="signup_date"
@@ -132,8 +146,6 @@ ORDER BY cohort_date
 /%}
 
 {% /row %}
-
-
 
 ```sql available_periods
 SELECT DISTINCT month_number
@@ -159,9 +171,11 @@ ORDER BY month_number
         date="cohort_date"
         range="{{time_range}}"
     }
+    
 %}
     {% line y="sum(active_users) / sum(cohort_size)"
-           options={type="dashed"} 
+           options={type="dashed"
+           } 
            /%}
     {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)"
            options={type="solid"} /%}
