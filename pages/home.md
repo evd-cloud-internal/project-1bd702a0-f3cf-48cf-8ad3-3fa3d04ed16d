@@ -93,15 +93,17 @@ SELECT
 FROM parent_conversion
 ```
 
-```sql retention_rates
+```sql cohort_retention
 SELECT
     cohort_date,
-    SUM(cohort_size) filter (WHERE month_number = 0) AS cohort_size,
-    SUM(active_users) filter (WHERE month_number = 1) AS active_m1,
-    SUM(active_users) filter (WHERE month_number = 2) AS active_m2,
-    SUM(active_users) filter (WHERE month_number = 3) AS active_m3
+    month_number,
+    bank_identifier,
+    cohort_size,
+    active_users,
+    CASE WHEN is_period_complete THEN active_users END AS active_users_confirmed,
+    CASE WHEN is_period_complete THEN cohort_size END AS cohort_size_confirmed
 FROM month_n_retention
-GROUP BY cohort_date
+ORDER BY cohort_date
 ```
 
 {% row  %}
@@ -129,16 +131,32 @@ GROUP BY cohort_date
     date_grain="week"
 /%}
 
+```sql available_periods
+SELECT DISTINCT month_number
+FROM month_n_retention
+WHERE month_number > 0
+ORDER BY month_number
+```
 
+{% repeat id="month_num" data="available_periods" column="month_number" %}
 
-{% line_chart
-    data="retention_rates"
+{% combo_chart
+    data="cohort_retention"
     x="cohort_date"
-    y=["sum(active_m1) / SUM(cohort_size)", "sum(active_m2) / SUM(cohort_size)", "sum(active_m3) / SUM(cohort_size)"]
-    date_grain={{date_grain}}
-/%}
+    where="month_number = {{ month_num }}"
+    title="M{{month_num}} Retention"
+    y_fmt="pct1"
+    height=250
+%}
+    {% line y="sum(active_users) / sum(cohort_size)"
+           options={type="dotted" color="#3b82f6" opacity=0.4} /%}
+    {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)"
+           options={type="solid" color="#3b82f6"} /%}
+{% /combo_chart %}
+
+
+{% /repeat %}
+
+
 
 {% /row %}
-
-### Todos
-Fix incomplete periods and data design?
