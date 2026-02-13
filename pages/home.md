@@ -17,7 +17,7 @@ Get a clear view of growth trends of active users from partners.
 
 {% range_calendar
     id="time_range"
-    default_range="last 3 months"
+    default_range="last 6 months"
     title="Choose a range"
 /%}
 
