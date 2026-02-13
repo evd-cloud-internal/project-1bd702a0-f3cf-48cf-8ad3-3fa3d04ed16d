@@ -131,12 +131,16 @@ ORDER BY cohort_date
     date_grain="week"
 /%}
 
+{% /row %}
+
 ```sql available_periods
 SELECT DISTINCT month_number
 FROM month_n_retention
-WHERE month_number > 0
+WHERE month_number BETWEEN 1 AND 3
 ORDER BY month_number
 ```
+
+{% row  %}
 
 {% repeat id="month_num" data="available_periods" column="month_number" %}
 
@@ -149,7 +153,7 @@ ORDER BY month_number
     height=250
 %}
     {% line y="sum(active_users) / sum(cohort_size)"
-           options={type="dotted" color="#3b82f6" opacity=0.4} /%}
+           options={type="dashed" color="#3b82f6" opacity=0.4} /%}
     {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)"
            options={type="solid" color="#3b82f6"} /%}
 {% /combo_chart %}
@@ -157,6 +161,9 @@ ORDER BY month_number
 
 {% /repeat %}
 
-
-
 {% /row %}
+
+
+
+
+
