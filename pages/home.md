@@ -122,8 +122,6 @@ ORDER BY cohort_date
     date_grain={{date_grain}}
 /%}
 
-
-
 {% line_chart
     data="conversion_rate"
     x="signup_date"
@@ -135,12 +133,16 @@ ORDER BY cohort_date
 
 {% /row %}
 
+
+
 ```sql available_periods
 SELECT DISTINCT month_number
 FROM month_n_retention
 WHERE month_number BETWEEN 1 AND 3
 ORDER BY month_number
 ```
+
+## Cohort retention trends
 
 {% row  %}
 
@@ -152,9 +154,15 @@ ORDER BY month_number
     where="month_number = {{ month_num }}"
     title="M{{month_num}} Retention"
     y_fmt="pct1"
+    date_grain={{date_grain}}
+    date_range={
+        date="cohort_date"
+        range="{{time_range}}"
+    }
 %}
     {% line y="sum(active_users) / sum(cohort_size)"
-           options={type="dashed"} /%}
+           options={type="dashed"} 
+           /%}
     {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)"
            options={type="solid"} /%}
 {% /combo_chart %}
