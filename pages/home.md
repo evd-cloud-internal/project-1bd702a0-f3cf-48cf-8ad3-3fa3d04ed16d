@@ -4,6 +4,12 @@ assetId: fac58792-1273-4b3a-affa-4d01e083acc0
 type: page
 ---
 
+{% image
+  url="https://gimi-org.github.io/gimi-analytics/images/white-logo.png"
+  description="Gimi Logo"
+  max_width=150
+/%}
+
 # Partner Growth trends
 Get a clear view of growth trends of active users from partners.
 
