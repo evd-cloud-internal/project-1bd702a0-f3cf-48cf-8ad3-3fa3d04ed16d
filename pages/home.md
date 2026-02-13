@@ -118,6 +118,8 @@ FROM month_n_retention
 
 ## New partner parents
 
+
+
 {% row  %}
 
 {% line_chart
@@ -128,9 +130,14 @@ FROM month_n_retention
     title="New Parents from partners"
     subtitle="Signups over time"
     date_grain={{date_grain}}
+    info="New Parent Profiles from parters"
 /%}
 
+
+
 {% /row %}
+
+
 
 ## New Parent Conversion rate
 
