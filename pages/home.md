@@ -165,7 +165,7 @@ ORDER BY month_number
     x="cohort_date"
     where="month_number = {{ month_num }}"
     title="M{{month_num}} Retention"
-    y_fmt="pct1"
+    y_fmt="pct0"
     date_grain={{date_grain}}
     date_range={
         date="cohort_date"
