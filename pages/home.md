@@ -4,7 +4,9 @@ assetId: fac58792-1273-4b3a-affa-4d01e083acc0
 type: page
 ---
 
-# Company Dashboard
+# Partner Growth trends
+Get a clear view of growth trends of active users from partners.
+
 
 {% date_grain_selector
     title="Choose a grain"
@@ -150,12 +152,11 @@ ORDER BY month_number
     where="month_number = {{ month_num }}"
     title="M{{month_num}} Retention"
     y_fmt="pct1"
-    height=250
 %}
     {% line y="sum(active_users) / sum(cohort_size)"
-           options={type="dashed" color="#3b82f6" opacity=0.4} /%}
+           options={type="dashed"} /%}
     {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)"
-           options={type="solid" color="#3b82f6"} /%}
+           options={type="solid"} /%}
 {% /combo_chart %}
 
 
