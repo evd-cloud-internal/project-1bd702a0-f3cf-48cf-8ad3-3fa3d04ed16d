@@ -163,8 +163,6 @@ ORDER BY month_number
 
 ## Cohort retention trends
 
-{% row  %}
-
 {% repeat id="month_num" data="available_periods" column="month_number" %}
 
 {% combo_chart
@@ -190,8 +188,6 @@ ORDER BY month_number
 
 
 {% /repeat %}
-
-{% /row %}
 
 
 
