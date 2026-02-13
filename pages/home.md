@@ -87,31 +87,11 @@ SELECT
 FROM new_partner_parent_profiles
 ```
 
-
-{% line_chart
-    data="new_parents"
-    x="signup_date"
-    y="sum(new_parent_profiles)"
-    y_fmt="num0"
-    title="New Parents from partners"
-    subtitle="Signups over time"
-    date_grain={{date_grain}}
-/%}
-
 ```sql conversion_rate
 SELECT
     *
 FROM parent_conversion
 ```
-
-{% line_chart
-    data="conversion_rate"
-    x="signup_date"
-    y="sum(converted_30d) / sum(signups)"
-    title="Parent Conversion Rate (30d)"
-    subtitle="% of signups who convert within 30 days"
-    date_grain="week"
-/%}
 
 ```sql retention_rates
 SELECT
@@ -124,6 +104,33 @@ FROM month_n_retention
 GROUP BY cohort_date
 ```
 
+{% row  %}
+
+
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="New Parents from partners"
+    subtitle="Signups over time"
+    date_grain={{date_grain}}
+/%}
+
+
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    title="Parent Conversion Rate (30d)"
+    subtitle="% of signups who convert within 30 days"
+    date_grain="week"
+/%}
+
+
+
 {% line_chart
     data="retention_rates"
     x="cohort_date"
@@ -131,4 +138,7 @@ GROUP BY cohort_date
     date_grain={{date_grain}}
 /%}
 
+{% /row %}
+
+### Todos
 Fix incomplete periods and data design?
