@@ -127,7 +127,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parents from partners"
+    title="New Parent Profiles from partners"
     subtitle="Signups over time"
     date_grain={{date_grain}}
     info="New Parent Profiles from parters"
