@@ -35,8 +35,9 @@ SELECT
     *
 FROM active_children
 WHERE period_end_date = (SELECT max_date FROM max_date)
-AND period_type = 'day'
+AND period_type = 'DAY'
 ```
+
 
 {% big_value
     text_size="2xl"
@@ -54,13 +55,13 @@ SELECT
 FROM (
     SELECT period_end_date, sum(active_children) as active_children
     FROM active_children
-    WHERE period_type = {{date_grain}}
+    WHERE period_type = UPPER({{date_grain}})
     GROUP BY period_end_date
 ) c
 LEFT JOIN (
     SELECT period_end_date, sum(active_families) as active_families
     FROM active_families
-    WHERE period_type = {{date_grain}}
+    WHERE period_type = UPPER({{date_grain}})
     GROUP BY period_end_date
 ) f ON c.period_end_date = f.period_end_date
 ORDER BY c.period_end_date
