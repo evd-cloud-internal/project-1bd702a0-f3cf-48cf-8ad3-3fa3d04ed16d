@@ -44,6 +44,7 @@ AND period_type = 'DAY'
     title="Monthly Active Chilcren"
     data="current_active_children"
     value="sum(active_children)"
+    fmt="num2k"
 /%}
 
 
@@ -85,6 +86,7 @@ ORDER BY c.period_end_date
     data_labels={
         position="left"
     }
+    fmt="num2k"
 /%}
 {% line
     y="sum(active_families)"
@@ -95,6 +97,7 @@ ORDER BY c.period_end_date
         }
         type="dashed"
     }
+    fmt="num2k"
 /%}
 
 {% /combo_chart %}
