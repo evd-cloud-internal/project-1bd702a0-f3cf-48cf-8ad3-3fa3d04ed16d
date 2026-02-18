@@ -68,15 +68,31 @@ LEFT JOIN (
 ORDER BY c.period_end_date
 ```
 
-{% combo_chart
-    data="active_users"
-    x="period_end_date"
-    title="Active users"
-    date_range={
-        date="period_end_date"
-        range="{{time_range}}"
-    }
-%}
+{% row %}
+
+
+    {% horizontal_bar_chart width=1
+        data="current_active_children"
+        x="active_children"
+        y="bank_identifier"
+        data_labels={
+            position="right"
+        }
+        x_fmt="num2k"
+        series="bank_identifier"
+
+
+    /%}
+
+    {% combo_chart width=2
+        data="active_users"
+        x="period_end_date"
+        title="Active users"
+        date_range={
+            date="period_end_date"
+            range="{{time_range}}"
+        }
+    %}
 
 {% line
     y="sum(active_children)"
@@ -101,6 +117,8 @@ ORDER BY c.period_end_date
 /%}
 
 {% /combo_chart %}
+
+{% /row %}
 
 ```sql new_parents
 SELECT
