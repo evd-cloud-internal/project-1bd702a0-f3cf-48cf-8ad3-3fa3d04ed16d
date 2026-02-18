@@ -68,10 +68,30 @@ LEFT JOIN (
 ORDER BY c.period_end_date
 ```
 
+{% repeat
+    id="bank"
+    data="current_active_children"
+    column="bank_identifier"
+%}
+
+{% stack card=true %}
+        {% big_value
+            data="current_active_children"
+            value="sum(active_children)"
+            where="bank_identifier = '{{bank.literal}}'"
+        /%}
+    {% /stack %}
+
+{% /repeat %}
+
 {% row %}
 
 
-    {% horizontal_bar_chart width=15
+
+    
+
+
+    {% horizontal_bar_chart
         data="current_active_children"
         x="active_children"
         y="bank_identifier"
@@ -89,12 +109,9 @@ ORDER BY c.period_end_date
             labels=false
             title=""
         }
-
-
-
     /%}
 
-    {% combo_chart width=80
+    {% combo_chart
         data="active_users"
         x="period_end_date"
         title="Active users"
