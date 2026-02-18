@@ -80,6 +80,16 @@ ORDER BY c.period_end_date
         }
         x_fmt="num2k"
         series="bank_identifier"
+        y_axis_options={
+            labels=false
+            gridlines=false
+
+        }
+        x_axis_options={
+            labels=false
+            title=""
+        }
+
 
 
     /%}
