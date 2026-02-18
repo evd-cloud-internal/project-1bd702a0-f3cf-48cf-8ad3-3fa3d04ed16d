@@ -71,7 +71,7 @@ ORDER BY c.period_end_date
 {% row %}
 
 
-    {% horizontal_bar_chart width=33
+    {% horizontal_bar_chart width=15
         data="current_active_children"
         x="active_children"
         y="bank_identifier"
@@ -94,7 +94,7 @@ ORDER BY c.period_end_date
 
     /%}
 
-    {% combo_chart width=66
+    {% combo_chart width=80
         data="active_users"
         x="period_end_date"
         title="Active users"
