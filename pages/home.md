@@ -10,7 +10,7 @@ type: page
   max_width=150
 /%}
 
-# Partner Growth trends
+# Partner Growth KPI trends
 Get a clear view of growth trends of active users from partners.
 
 
@@ -126,10 +126,8 @@ SELECT
 FROM month_n_retention
 ```
 
+# Partner distribution
 ## New partner parents
-
-
-
 {% row  %}
 
 {% line_chart
@@ -140,6 +138,10 @@ FROM month_n_retention
     title="New Parent Profiles from partners"
     subtitle="Signups over time"
     date_grain={{date_grain}}
+    date_range={
+        range={{time_range}}
+        date="signup_date"
+    }
     info="New Parent Profiles from parters"
 /%}
 
@@ -157,9 +159,13 @@ FROM month_n_retention
     data="conversion_rate"
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
-    title="Parent Conversion Rate (30d)"
-    subtitle="% of signups who convert within 30 days"
+    title="Parent Conversion Rate"
+    subtitle="% of parent profiles who convert within 30 days"
     date_grain="week"
+    date_range={
+        range={{time_range}}
+        date="signup_date"
+    }
 /%}
 
 {% /row %}
@@ -170,9 +176,7 @@ FROM month_n_retention
 WHERE month_number BETWEEN 1 AND 3
 ORDER BY month_number
 ```
-
-## Cohort retention trends
-
+# Child retention
 {% repeat id="month_num" data="available_periods" column="month_number" %}
 
 {% combo_chart
