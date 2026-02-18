@@ -48,30 +48,51 @@ AND period_type = 'DAY'
 /%}
 
 
+
+
 ```sql active_users
 SELECT
     c.period_end_date,
+    bank_identifier,
     c.active_children,
     f.active_families
 FROM (
-    SELECT period_end_date, sum(active_children) as active_children
+    SELECT period_end_date, 
+    sum(active_children) as active_children, 
+    bank_identifier
     FROM active_children
     WHERE period_type = UPPER({{date_grain}})
-    GROUP BY period_end_date
+    GROUP BY period_end_date, bank_identifier
 ) c
 LEFT JOIN (
-    SELECT period_end_date, sum(active_families) as active_families
+    SELECT 
+        period_end_date, 
+        sum(active_families) as active_families,
+        bank_identifier
     FROM active_families
     WHERE period_type = UPPER({{date_grain}})
-    GROUP BY period_end_date
-) f ON c.period_end_date = f.period_end_date
+    GROUP BY period_end_date, bank_identifier
+) f ON (c.period_end_date = f.period_end_date AND c.bank_identifier = f.bank_identifier)
 ORDER BY c.period_end_date
 ```
 
+{% table
+    data="active_users"
+%}
 
+    {% dimension
+        value="bank_identifier"
+    /%}
+    {% measure
+        value="sum(active_children)"
+        date_range={
+            range="2026-02-16 to 2026-02-17"
+            date="period_end_date"
+        }
+        viz="bar"
+    /%}
 
-    
-
+{% /table %}
 
     {% horizontal_bar_chart
         data="current_active_children"
@@ -127,14 +148,12 @@ ORDER BY c.period_end_date
 
 {% /combo_chart %}
 
-{% row %}
-
 {% line_chart
     data="active_children"
     x="period_end_date"
     y="sum(active_children)"
     title="ABN Amro"
-    where="bank_identifier = 'abn-amro-nl'"
+    where="bank_identifier = 'abn-amro-nl' AND period_type = UPPER({{date_grain}})"
     y_fmt="num2k"
     date_grain={{date_grain}}
     date_range={
@@ -149,7 +168,7 @@ ORDER BY c.period_end_date
     y="sum(active_children)"
     series="bank_identifier"
     title="Nordea"
-    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk') AND period_type = UPPER({{date_grain}})"
     y_fmt="num2k"
     date_grain={{date_grain}}
     date_range={
@@ -164,7 +183,7 @@ ORDER BY c.period_end_date
     y="sum(active_children)"
     series="bank_identifier"
     title="Other Banks"
-    where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
+    where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk') AND period_type = UPPER({{date_grain}})"
     y_fmt="num2k"
     date_grain={{date_grain}}
     date_range={
@@ -218,11 +237,12 @@ FROM month_n_retention
     info="New Parent Profiles from parters"
 /%}
 
-
-
 {% /row %}
 
-
+{% value
+    data="current_active_children"
+    value="active_children"
+/%}
 
 ## New Parent Conversion rate
 
