@@ -68,24 +68,6 @@ LEFT JOIN (
 ORDER BY c.period_end_date
 ```
 
-{% repeat
-    id="bank"
-    data="current_active_children"
-    column="bank_identifier"
-%}
-
-{% stack card=true %}
-        {% big_value
-            data="current_active_children"
-            value="sum(active_children)"
-            where="bank_identifier = '{{bank.literal}}'"
-        /%}
-    {% /stack %}
-
-{% /repeat %}
-
-{% row %}
-
 
 
     
@@ -144,6 +126,52 @@ ORDER BY c.period_end_date
 /%}
 
 {% /combo_chart %}
+
+{% row %}
+
+{% line_chart
+    data="active_children"
+    x="period_end_date"
+    y="sum(active_children)"
+    title="ABN Amro"
+    where="bank_identifier = 'abn-amro-nl'"
+    y_fmt="num2k"
+    date_grain={{date_grain}}
+    date_range={
+        date="period_end_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="active_children"
+    x="period_end_date"
+    y="sum(active_children)"
+    series="bank_identifier"
+    title="Nordea"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    y_fmt="num2k"
+    date_grain={{date_grain}}
+    date_range={
+        date="period_end_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="active_children"
+    x="period_end_date"
+    y="sum(active_children)"
+    series="bank_identifier"
+    title="Other Banks"
+    where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
+    y_fmt="num2k"
+    date_grain={{date_grain}}
+    date_range={
+        date="period_end_date"
+        range="{{time_range}}"
+    }
+/%}
 
 {% /row %}
 
