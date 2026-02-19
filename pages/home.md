@@ -69,6 +69,8 @@ AND is_period_complete = true
 ORDER BY cohort_date
 ```
 
+# KPI summary
+
 {% big_value
     text_size="2xl"
     title="Monthly Active Children"
@@ -194,6 +196,10 @@ FULL OUTER JOIN retention USING (bank_identifier)
 ORDER BY active_children DESC
 ```
 
+{% details
+    title="Per bank KPIs"
+%}
+
 {% table
     data="bank_kpis"
 %}
@@ -229,6 +235,9 @@ ORDER BY active_children DESC
     /%}
 
 {% /table %}
+{% /details %}
+
+
     {% combo_chart
         data="active_users"
         x="period_end_date"
@@ -262,6 +271,8 @@ ORDER BY active_children DESC
 /%}
 
 {% /combo_chart %}
+
+# Active users
 
 {% line_chart
     data="active_children"
