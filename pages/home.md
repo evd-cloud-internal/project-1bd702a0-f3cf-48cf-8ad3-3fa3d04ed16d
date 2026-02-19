@@ -267,6 +267,9 @@ ORDER BY active_children DESC
         type="dashed"
     }
     fmt="num2k"
+    data_labels={
+        position="above"
+    }
 /%}
 
 {% /combo_chart %}
