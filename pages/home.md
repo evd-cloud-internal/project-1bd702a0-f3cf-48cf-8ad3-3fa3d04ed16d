@@ -487,41 +487,57 @@ FROM month_n_retention
 
 {% /row %}
 
-```sql available_periods
-SELECT DISTINCT month_number
-FROM month_n_retention
-WHERE month_number BETWEEN 1 AND 3
-ORDER BY month_number
-```
 # Child retention
 
-{% row  %}
-
-{% repeat id="month_num" data="available_periods" column="month_number" %}
+{% row %}
 
 {% combo_chart
     data="cohort_retention"
     x="cohort_date"
-    where="month_number = {{ month_num }}"
-    title="M{{month_num}} Retention"
+    where="month_number = 1"
+    title="M1 Retention"
     y_fmt="pct0"
     date_grain={{date_grain}}
     date_range={
         date="cohort_date"
         range="{{time_range}}"
     }
-    
 %}
-    {% line y="sum(active_users) / sum(cohort_size)"
-           options={type="dashed"
-           } 
-           /%}
-    {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)"
-           options={type="solid"} /%}
+    {% line y="sum(active_users) / sum(cohort_size)" options={type="dashed"} /%}
+    {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)" options={type="solid"} /%}
 {% /combo_chart %}
 
+{% combo_chart
+    data="cohort_retention"
+    x="cohort_date"
+    where="month_number = 2"
+    title="M2 Retention"
+    y_fmt="pct0"
+    date_grain={{date_grain}}
+    date_range={
+        date="cohort_date"
+        range="{{time_range}}"
+    }
+%}
+    {% line y="sum(active_users) / sum(cohort_size)" options={type="dashed"} /%}
+    {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)" options={type="solid"} /%}
+{% /combo_chart %}
 
-{% /repeat %}
+{% combo_chart
+    data="cohort_retention"
+    x="cohort_date"
+    where="month_number = 3"
+    title="M3 Retention"
+    y_fmt="pct0"
+    date_grain={{date_grain}}
+    date_range={
+        date="cohort_date"
+        range="{{time_range}}"
+    }
+%}
+    {% line y="sum(active_users) / sum(cohort_size)" options={type="dashed"} /%}
+    {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)" options={type="solid"} /%}
+{% /combo_chart %}
 
 {% /row %}
 
