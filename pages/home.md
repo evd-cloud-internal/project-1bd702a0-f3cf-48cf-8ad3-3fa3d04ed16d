@@ -10,7 +10,7 @@ type: page
   max_width=150
 /%}
 
-# Partner Growth KPI trends
+# North Star KPI trends
 Get a clear view of growth trends of active users from partners.
 
 
@@ -237,6 +237,7 @@ ORDER BY active_children DESC
         data="active_users"
         x="period_end_date"
         title="Active users"
+        date_grain={{date_grain}}
         date_range={
             date="period_end_date"
             range="{{time_range}}"
@@ -343,8 +344,6 @@ FROM month_n_retention
 
 # Partner distribution
 
-## Overall
-
 {% row %}
 
 {% line_chart
@@ -376,8 +375,6 @@ FROM month_n_retention
 
 {% /row %}
 
-## ABN Amro
-
 {% row %}
 
 {% line_chart
@@ -385,7 +382,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parent Profiles"
+    title="ABN Amro - New Parent Profiles"
     where="bank_identifier = 'abn-amro-nl'"
     date_grain={{date_grain}}
     date_range={
@@ -399,7 +396,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Parent Conversion Rate (30d)"
+    title="ABN Amro - Conversion Rate (30d)"
     where="bank_identifier = 'abn-amro-nl'"
     date_grain={{date_grain}}
     date_range={
@@ -410,8 +407,6 @@ FROM month_n_retention
 
 {% /row %}
 
-## Nordea
-
 {% row %}
 
 {% line_chart
@@ -419,7 +414,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parent Profiles"
+    title="Nordea - New Parent Profiles"
     where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
     date_grain={{date_grain}}
     date_range={
@@ -433,7 +428,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Parent Conversion Rate (30d)"
+    title="Nordea - Conversion Rate (30d)"
     where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
     date_grain={{date_grain}}
     date_range={
@@ -448,8 +443,6 @@ FROM month_n_retention
 
 {% accordion_item title="Nordea Branches" icon="trending-up" %}
 
-### Nordea SE
-
 {% row %}
 
 {% line_chart
@@ -457,7 +450,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parents"
+    title="Nordea SE - New Parents"
     where="bank_identifier = 'nordea-se'"
     date_grain={{date_grain}}
     date_range={
@@ -471,7 +464,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Conversion (30d)"
+    title="Nordea SE - Conversion (30d)"
     where="bank_identifier = 'nordea-se'"
     date_grain={{date_grain}}
     date_range={
@@ -482,8 +475,6 @@ FROM month_n_retention
 
 {% /row %}
 
-### Nordea NO
-
 {% row %}
 
 {% line_chart
@@ -491,7 +482,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parents"
+    title="Nordea NO - New Parents"
     where="bank_identifier = 'nordea-no'"
     date_grain={{date_grain}}
     date_range={
@@ -505,7 +496,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Conversion (30d)"
+    title="Nordea NO - Conversion (30d)"
     where="bank_identifier = 'nordea-no'"
     date_grain={{date_grain}}
     date_range={
@@ -516,8 +507,6 @@ FROM month_n_retention
 
 {% /row %}
 
-### Nordea DK
-
 {% row %}
 
 {% line_chart
@@ -525,7 +514,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parents"
+    title="Nordea DK - New Parents"
     where="bank_identifier = 'nordea-dk'"
     date_grain={{date_grain}}
     date_range={
@@ -539,7 +528,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Conversion (30d)"
+    title="Nordea DK - Conversion (30d)"
     where="bank_identifier = 'nordea-dk'"
     date_grain={{date_grain}}
     date_range={
@@ -554,8 +543,6 @@ FROM month_n_retention
 
 {% /accordion %}
 
-## Other Banks
-
 {% row %}
 
 {% line_chart
@@ -563,7 +550,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parent Profiles"
+    title="Other Banks - New Parent Profiles"
     where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
     date_grain={{date_grain}}
     date_range={
@@ -577,7 +564,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Parent Conversion Rate (30d)"
+    title="Other Banks - Conversion Rate (30d)"
     where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
     date_grain={{date_grain}}
     date_range={
@@ -588,11 +575,10 @@ FROM month_n_retention
 
 {% /row %}
 
-{% accordion variant="" %}
+{% accordion variant="well" %}
 
 {% accordion_item title="Per Bank Details" icon="trending-up" %}
 
-### ICA Banken SE
 
 {% row %}
 
@@ -601,7 +587,8 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parents"
+    title="ICA Banken - New Parents"
+    subtitle="New Parent sign-ups from ICA Banken"
     where="bank_identifier = 'icabanken-se'"
     date_grain={{date_grain}}
     date_range={
@@ -615,7 +602,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Conversion (30d)"
+    title="ICA Banken - Conversion (30d)"
     where="bank_identifier = 'icabanken-se'"
     date_grain={{date_grain}}
     date_range={
@@ -626,7 +613,6 @@ FROM month_n_retention
 
 {% /row %}
 
-### Länsförsäkringar Östgöta SE
 
 {% row %}
 
@@ -635,7 +621,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parents"
+    title="Länsförsäkringar Östgöta - New Parents"
     where="bank_identifier = 'lansforsakringar-ostgota-se'"
     date_grain={{date_grain}}
     date_range={
@@ -649,7 +635,7 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Conversion (30d)"
+    title="Länsförsäkringar Östgöta - Conversion (30d)"
     where="bank_identifier = 'lansforsakringar-ostgota-se'"
     date_grain={{date_grain}}
     date_range={
@@ -673,7 +659,7 @@ FROM month_n_retention
     x="cohort_date"
     where="month_number = 1"
     title="M1 Retention"
-    y_fmt="pct0"
+    y_fmt="pct1"
     date_grain={{date_grain}}
     date_range={
         date="cohort_date"
@@ -689,7 +675,7 @@ FROM month_n_retention
     x="cohort_date"
     where="month_number = 2"
     title="M2 Retention"
-    y_fmt="pct0"
+    y_fmt="pct1"
     date_grain={{date_grain}}
     date_range={
         date="cohort_date"
@@ -705,7 +691,7 @@ FROM month_n_retention
     x="cohort_date"
     where="month_number = 3"
     title="M3 Retention"
-    y_fmt="pct0"
+    y_fmt="pct1"
     date_grain={{date_grain}}
     date_range={
         date="cohort_date"
