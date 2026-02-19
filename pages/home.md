@@ -452,6 +452,10 @@ FROM month_n_retention
     }
 /%}
 
+{% /row %}
+
+{% row  %}
+
 {% line_chart
     data="new_parents"
     x="signup_date"
@@ -479,6 +483,10 @@ FROM month_n_retention
         range="{{time_range}}"
     }
 /%}
+
+{% /row %}
+
+{% row %}
 
 {% line_chart
     data="new_parents"
