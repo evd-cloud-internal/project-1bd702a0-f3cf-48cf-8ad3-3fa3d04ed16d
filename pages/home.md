@@ -424,12 +424,17 @@ FROM month_n_retention
 
 {% row %}
 
+{% stack %}
+
+#### Nordea SE
+
 {% line_chart
     data="new_parents"
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="Nordea SE — New Parents"
+    title="New Parents"
+    height=150
     where="bank_identifier = 'nordea-se'"
     date_grain={{date_grain}}
     date_range={
@@ -443,7 +448,8 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Nordea SE — Conversion (30d)"
+    title="Conversion (30d)"
+    height=150
     where="bank_identifier = 'nordea-se'"
     date_grain={{date_grain}}
     date_range={
@@ -452,16 +458,19 @@ FROM month_n_retention
     }
 /%}
 
-{% /row %}
+{% /stack %}
 
-{% row  %}
+{% stack %}
+
+#### Nordea NO
 
 {% line_chart
     data="new_parents"
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="Nordea NO — New Parents"
+    title="New Parents"
+    height=150
     where="bank_identifier = 'nordea-no'"
     date_grain={{date_grain}}
     date_range={
@@ -475,7 +484,8 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Nordea NO — Conversion (30d)"
+    title="Conversion (30d)"
+    height=150
     where="bank_identifier = 'nordea-no'"
     date_grain={{date_grain}}
     date_range={
@@ -484,16 +494,19 @@ FROM month_n_retention
     }
 /%}
 
-{% /row %}
+{% /stack %}
 
-{% row %}
+{% stack %}
+
+#### Nordea DK
 
 {% line_chart
     data="new_parents"
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="Nordea DK — New Parents"
+    title="New Parents"
+    height=150
     where="bank_identifier = 'nordea-dk'"
     date_grain={{date_grain}}
     date_range={
@@ -507,7 +520,8 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    title="Nordea DK — Conversion (30d)"
+    title="Conversion (30d)"
+    height=150
     where="bank_identifier = 'nordea-dk'"
     date_grain={{date_grain}}
     date_range={
@@ -515,6 +529,8 @@ FROM month_n_retention
         range="{{time_range}}"
     }
 /%}
+
+{% /stack %}
 
 {% /row %}
 
