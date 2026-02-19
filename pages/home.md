@@ -588,7 +588,7 @@ FROM month_n_retention
 
 {% /row %}
 
-{% accordion %}
+{% accordion variant="" %}
 
 {% accordion_item title="Per Bank Details" icon="trending-up" %}
 
