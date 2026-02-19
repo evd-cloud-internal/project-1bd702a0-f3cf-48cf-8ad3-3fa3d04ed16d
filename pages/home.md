@@ -372,7 +372,7 @@ FROM month_n_retention
     y_fmt="pct1"
     title="Parent Conversion Rate (30d)"
     subtitle="% of parent profiles who convert within 30 days"
-    date_grain="week"
+    date_grain={{date_grain}}
     date_range={
         date="signup_date"
         range="{{time_range}}"
@@ -406,7 +406,7 @@ FROM month_n_retention
     y_fmt="pct1"
     title="Parent Conversion Rate (30d)"
     where="bank_identifier = 'abn-amro-nl'"
-    date_grain="week"
+    date_grain={{date_grain}}
     date_range={
         date="signup_date"
         range="{{time_range}}"
@@ -442,7 +442,7 @@ FROM month_n_retention
     series="bank_identifier"
     title="Parent Conversion Rate (30d)"
     where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
-    date_grain="week"
+    date_grain={{date_grain}}
     date_range={
         date="signup_date"
         range="{{time_range}}"
@@ -478,7 +478,7 @@ FROM month_n_retention
     series="bank_identifier"
     title="Parent Conversion Rate (30d)"
     where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
-    date_grain="week"
+    date_grain={{date_grain}}
     date_range={
         date="signup_date"
         range="{{time_range}}"
@@ -534,6 +534,7 @@ FROM month_n_retention
         date="cohort_date"
         range="{{time_range}}"
     }
+
 %}
     {% line y="sum(active_users) / sum(cohort_size)" options={type="dashed"} /%}
     {% line y="sum(active_users_confirmed) / sum(cohort_size_confirmed)" options={type="solid"} /%}
