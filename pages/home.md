@@ -422,11 +422,11 @@ FROM month_n_retention
 
 ## Nordea
 
+{% stack %}
+
 ### Nordea SE
 
-{% row  %}
-
-{% stack  %}
+{% row %}
 
 {% line_chart
     data="new_parents"
@@ -456,14 +456,11 @@ FROM month_n_retention
     }
 /%}
 
-{% /stack %}
 {% /row %}
 
 ### Nordea NO
 
-{% row  %}
-
-{% stack  %}
+{% row %}
 
 {% line_chart
     data="new_parents"
@@ -493,38 +490,11 @@ FROM month_n_retention
     }
 /%}
 
-{% /stack %}
 {% /row %}
 
-{% line_chart
-    data="new_parents"
-    x="signup_date"
-    y="sum(new_parent_profiles)"
-    y_fmt="num0"
-    title="New Parents"
-    where="bank_identifier = 'nordea-no'"
-    date_grain={{date_grain}}
-    date_range={
-        date="signup_date"
-        range="{{time_range}}"
-    }
-/%}
+### Nordea DK
 
-{% line_chart
-    data="conversion_rate"
-    x="signup_date"
-    y="sum(converted_30d) / sum(signups)"
-    y_fmt="pct1"
-    title="Conversion (30d)"
-    where="bank_identifier = 'nordea-no'"
-    date_grain={{date_grain}}
-    date_range={
-        date="signup_date"
-        range="{{time_range}}"
-    }
-/%}
-
-#### Nordea DK
+{% row %}
 
 {% line_chart
     data="new_parents"
@@ -553,6 +523,10 @@ FROM month_n_retention
         range="{{time_range}}"
     }
 /%}
+
+{% /row %}
+
+{% /stack %}
 
 ## Other Banks
 
