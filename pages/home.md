@@ -86,10 +86,6 @@ ORDER BY cohort_date
     info="New Parent Last 30 days"
     value="sum(new_parent_profiles)"
     fmt="num0"
-    sparkline={
-        type="bar"
-        x="signup_date"
-    }
 /%}
 
 {% big_value
@@ -99,23 +95,14 @@ ORDER BY cohort_date
     value="sum(converted_30d) / sum(signups)"
     fmt="pct1"
     info="Weighted average: total conversions / total signups over last 30 days of completed periods"
-    sparkline={
-        type="line"
-        x="signup_date"
-    }
 /%}
 
 {% big_value
     text_size="3xl"
-    title="M1 Retention (Completed)"
+    title="M1 Retention"
     data="m1_retention_complete"
     value="sum(active_users) / sum(cohort_size)"
     fmt="pct1"
-    sparkline={
-        type="line"
-        x="cohort_date"
-        date_grain="month"
-    }
     info="Month 1 retention rate across all completed cohort periods"
 /%}
 
@@ -201,11 +188,13 @@ FULL OUTER JOIN retention USING (bank_identifier)
 ORDER BY active_children DESC
 ```
 
-{% details
-    title="Per bank KPIs"
-%}
 
-{% table
+{% accordion %}
+    {% accordion_item
+        title="Per Bank KPIs"
+        icon="trending-up"
+    %}
+        {% table
     data="bank_kpis"
 %}
 
@@ -240,7 +229,8 @@ ORDER BY active_children DESC
     /%}
 
 {% /table %}
-{% /details %}
+    {% /accordion_item %}
+{% /accordion %}
 
 # Active users
     {% combo_chart
