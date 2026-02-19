@@ -446,7 +446,7 @@ FROM month_n_retention
 
 {% accordion variant="well" %}
 
-{% accordion_item title="Per Branch Details" icon="trending-up" %}
+{% accordion_item title="Nordea Branches" icon="trending-up" %}
 
 ### Nordea SE
 
