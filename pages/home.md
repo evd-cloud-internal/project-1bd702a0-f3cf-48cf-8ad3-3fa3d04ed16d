@@ -272,7 +272,7 @@ ORDER BY active_children DESC
 
 {% /combo_chart %}
 
-
+{% row  %}
 
 {% line_chart
     data="active_children"
@@ -318,6 +318,10 @@ ORDER BY active_children DESC
     }
 /%}
 
+{% /row %}
+
+
+
 ```sql new_parents
 SELECT
     *
@@ -343,45 +347,141 @@ FROM month_n_retention
 ```
 
 # Partner distribution
-## New partner parents
-{% row  %}
+
+## Overall
+
+{% row %}
 
 {% line_chart
     data="new_parents"
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    title="New Parent Profiles from partners"
-    subtitle="Signups over time"
+    title="New Parent Profiles"
     date_grain={{date_grain}}
     date_range={
-        range={{time_range}}
         date="signup_date"
+        range="{{time_range}}"
     }
-    info="New Parent Profiles from parters"
 /%}
-
-{% /row %}
-
-{% value
-    data="current_active_children"
-    value="active_children"
-/%}
-
-## New Parent Conversion rate
-
-{% row  %}
 
 {% line_chart
     data="conversion_rate"
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
-    title="Parent Conversion Rate"
+    y_fmt="pct1"
+    title="Parent Conversion Rate (30d)"
     subtitle="% of parent profiles who convert within 30 days"
     date_grain="week"
     date_range={
-        range={{time_range}}
         date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% /row %}
+
+## ABN Amro
+
+{% row %}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="New Parent Profiles"
+    where="bank_identifier = 'abn-amro-nl'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    title="Parent Conversion Rate (30d)"
+    where="bank_identifier = 'abn-amro-nl'"
+    date_grain="week"
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% /row %}
+
+## Nordea
+
+{% row %}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    series="bank_identifier"
+    title="New Parent Profiles"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    series="bank_identifier"
+    title="Parent Conversion Rate (30d)"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain="week"
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% /row %}
+
+## Other Banks
+
+{% row %}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    series="bank_identifier"
+    title="New Parent Profiles"
+    where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    series="bank_identifier"
+    title="Parent Conversion Rate (30d)"
+    where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain="week"
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
     }
 /%}
 
