@@ -247,12 +247,10 @@ ORDER BY active_children DESC
         range={{time_range}}
         date="period_end_date"
     }
-
-    line_options={
-        markers={
-            shape="circle"
-        }
+    data_labels={
+        position="above"
     }
+
 /%}
 
 {% row  %}
