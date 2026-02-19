@@ -31,24 +31,86 @@ Get a clear view of growth trends of active users from partners.
 WITH max_date AS (
   SELECT MAX(period_end_date) max_date FROM active_children
 )
-SELECT 
+SELECT
     *
 FROM active_children
 WHERE period_end_date = (SELECT max_date FROM max_date)
 AND period_type = 'DAY'
 ```
 
+```sql new_parents_30d
+SELECT
+    signup_date,
+    new_parent_profiles
+FROM new_partner_parent_profiles
+WHERE signup_date >= today() - 30
+ORDER BY signup_date
+```
+
+```sql conversion_rate_30d
+SELECT
+    signup_date,
+    signups,
+    converted_30d
+FROM parent_conversion
+WHERE is_30d_complete = true
+AND signup_date > (SELECT max(signup_date) - 30 FROM parent_conversion WHERE is_30d_complete = true)
+ORDER BY signup_date
+```
+
+```sql m1_retention_complete
+SELECT
+    cohort_date,
+    active_users,
+    cohort_size
+FROM month_n_retention
+WHERE month_number = 1
+AND is_period_complete = true
+ORDER BY cohort_date
+```
 
 {% big_value
     text_size="2xl"
-    title="Monthly Active Chilcren"
+    title="Monthly Active Children"
     data="current_active_children"
     value="sum(active_children)"
     fmt="num2k"
 /%}
 
+{% big_value
+    text_size="2xl"
+    title="New Parents (Last 30d)"
+    data="new_parents_30d"
+    value="sum(new_parent_profiles)"
+    fmt="num0"
+    sparkline={
+        type="bar"
+        x="signup_date"
+    }
+/%}
 
+{% big_value
+    text_size="2xl"
+    title="Parent Conversion Rate (30d Avg)"
+    data="conversion_rate_30d"
+    value="sum(converted_30d) / sum(signups)"
+    fmt="pct1"
+    info="Weighted average: total conversions / total signups over last 30 days of completed periods"
+/%}
 
+{% big_value
+    text_size="2xl"
+    title="M1 Retention (Completed)"
+    data="m1_retention_complete"
+    value="sum(active_users) / sum(cohort_size)"
+    fmt="pct1"
+    sparkline={
+        type="line"
+        x="cohort_date"
+        date_grain="month"
+    }
+    info="Month 1 retention rate across all completed cohort periods"
+/%}
 
 ```sql active_users
 SELECT
@@ -76,44 +138,97 @@ LEFT JOIN (
 ORDER BY c.period_end_date
 ```
 
+```sql bank_kpis
+WITH max_date AS (
+    SELECT MAX(period_end_date) as max_date FROM active_children WHERE period_type = 'DAY'
+),
+active AS (
+    SELECT
+        bank_identifier,
+        sum(active_children) as active_children
+    FROM active_children
+    WHERE period_end_date = (SELECT max_date FROM max_date)
+    AND period_type = 'DAY'
+    GROUP BY bank_identifier
+),
+new_parents AS (
+    SELECT
+        bank_identifier,
+        sum(new_parent_profiles) as new_parents_30d
+    FROM new_partner_parent_profiles
+    WHERE signup_date >= today() - 30
+    GROUP BY bank_identifier
+),
+conversion AS (
+    SELECT
+        bank_identifier,
+        sum(converted_30d) as converted_30d,
+        sum(signups) as signups_30d
+    FROM parent_conversion
+    WHERE is_30d_complete = true
+    AND signup_date > (SELECT max(signup_date) - 30 FROM parent_conversion WHERE is_30d_complete = true)
+    GROUP BY bank_identifier
+),
+retention AS (
+    SELECT
+        bank_identifier,
+        sum(active_users) as m1_active_users,
+        sum(cohort_size) as m1_cohort_size
+    FROM month_n_retention
+    WHERE month_number = 1
+    AND is_period_complete = true
+    GROUP BY bank_identifier
+)
+SELECT
+    bank_identifier,
+    active_children,
+    new_parents_30d,
+    converted_30d,
+    signups_30d,
+    m1_active_users,
+    m1_cohort_size
+FROM active
+FULL OUTER JOIN new_parents USING (bank_identifier)
+FULL OUTER JOIN conversion USING (bank_identifier)
+FULL OUTER JOIN retention USING (bank_identifier)
+ORDER BY active_children DESC
+```
+
 {% table
-    data="active_users"
+    data="bank_kpis"
 %}
 
     {% dimension
         value="bank_identifier"
+        title="Bank"
     /%}
     {% measure
         value="sum(active_children)"
-        date_range={
-            range="2026-02-16 to 2026-02-17"
-            date="period_end_date"
-        }
+        title="Active Children"
+        fmt="num0"
         viz="bar"
+        sort="desc"
+    /%}
+    {% measure
+        value="sum(new_parents_30d)"
+        title="New Parents (30d)"
+        fmt="num0"
+        viz="bar"
+    /%}
+    {% measure
+        value="sum(converted_30d) / sum(signups_30d) as conversion_rate"
+        title="Conversion Rate (30d)"
+        fmt="pct1"
+        viz="color"
+    /%}
+    {% measure
+        value="sum(m1_active_users) / sum(m1_cohort_size) as m1_retention"
+        title="M1 Retention"
+        fmt="pct1"
+        viz="color"
     /%}
 
 {% /table %}
-
-    {% horizontal_bar_chart
-        data="current_active_children"
-        x="active_children"
-        y="bank_identifier"
-        data_labels={
-            position="right"
-        }
-        x_fmt="num2k"
-        series="bank_identifier"
-        y_axis_options={
-            labels=false
-            gridlines=false
-
-        }
-        x_axis_options={
-            labels=false
-            title=""
-        }
-    /%}
-
     {% combo_chart
         data="active_users"
         x="period_end_date"
@@ -191,8 +306,6 @@ ORDER BY c.period_end_date
         range="{{time_range}}"
     }
 /%}
-
-{% /row %}
 
 ```sql new_parents
 SELECT
