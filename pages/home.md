@@ -422,11 +422,9 @@ FROM month_n_retention
 
 ## Nordea
 
-{% row %}
+{% row  %}
 
-{% stack %}
-
-#### Nordea SE
+{% stack  %}
 
 {% line_chart
     data="new_parents"
@@ -434,7 +432,6 @@ FROM month_n_retention
     y="sum(new_parent_profiles)"
     y_fmt="num0"
     title="New Parents"
-    height=150
     where="bank_identifier = 'nordea-se'"
     date_grain={{date_grain}}
     date_range={
@@ -449,7 +446,6 @@ FROM month_n_retention
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
     title="Conversion (30d)"
-    height=150
     where="bank_identifier = 'nordea-se'"
     date_grain={{date_grain}}
     date_range={
@@ -459,8 +455,11 @@ FROM month_n_retention
 /%}
 
 {% /stack %}
+{% /row %}
 
-{% stack %}
+#### Nordea SE
+
+
 
 #### Nordea NO
 
@@ -470,7 +469,6 @@ FROM month_n_retention
     y="sum(new_parent_profiles)"
     y_fmt="num0"
     title="New Parents"
-    height=150
     where="bank_identifier = 'nordea-no'"
     date_grain={{date_grain}}
     date_range={
@@ -485,7 +483,6 @@ FROM month_n_retention
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
     title="Conversion (30d)"
-    height=150
     where="bank_identifier = 'nordea-no'"
     date_grain={{date_grain}}
     date_range={
@@ -493,10 +490,6 @@ FROM month_n_retention
         range="{{time_range}}"
     }
 /%}
-
-{% /stack %}
-
-{% stack %}
 
 #### Nordea DK
 
@@ -506,7 +499,6 @@ FROM month_n_retention
     y="sum(new_parent_profiles)"
     y_fmt="num0"
     title="New Parents"
-    height=150
     where="bank_identifier = 'nordea-dk'"
     date_grain={{date_grain}}
     date_range={
@@ -521,7 +513,6 @@ FROM month_n_retention
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
     title="Conversion (30d)"
-    height=150
     where="bank_identifier = 'nordea-dk'"
     date_grain={{date_grain}}
     date_range={
@@ -529,10 +520,6 @@ FROM month_n_retention
         range="{{time_range}}"
     }
 /%}
-
-{% /stack %}
-
-{% /row %}
 
 ## Other Banks
 
