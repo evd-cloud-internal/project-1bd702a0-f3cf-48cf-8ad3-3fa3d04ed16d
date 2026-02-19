@@ -237,7 +237,7 @@ ORDER BY active_children DESC
 {% /table %}
 {% /details %}
 
-
+# Active users
     {% combo_chart
         data="active_users"
         x="period_end_date"
@@ -272,7 +272,7 @@ ORDER BY active_children DESC
 
 {% /combo_chart %}
 
-# Active users
+
 
 {% line_chart
     data="active_children"
