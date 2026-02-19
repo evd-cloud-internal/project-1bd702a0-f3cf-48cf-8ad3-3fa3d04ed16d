@@ -189,10 +189,10 @@ ORDER BY active_children DESC
 ```
 
 
-{% accordion %}
+{% accordion variant="well" %}
     {% accordion_item
         title="Per Bank KPIs"
-        icon="trending-up"
+        icon="trending-up"        
     %}
         {% table
     data="bank_kpis"
@@ -444,7 +444,7 @@ FROM month_n_retention
 
 {% /row %}
 
-{% accordion %}
+{% accordion variant="well" %}
 
 {% accordion_item title="Per Branch Details" icon="trending-up" %}
 
