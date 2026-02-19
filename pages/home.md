@@ -13,6 +13,9 @@ type: page
 # North Star KPI trends
 Get a clear view of growth trends of active users from partners.
 
+- See trends in Active users, new parents, conversion and retention
+- Drill down to see what is driving the growth
+
 
 {% date_grain_selector
     title="Choose a grain"
