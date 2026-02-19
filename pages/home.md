@@ -444,9 +444,11 @@ FROM month_n_retention
 
 {% /row %}
 
-{% accordion single=true %}
+{% accordion %}
 
-{% accordion_item title="Nordea SE" icon="globe" %}
+{% accordion_item title="Per Branch Details" icon="trending-up" %}
+
+### Nordea SE
 
 {% row %}
 
@@ -480,9 +482,7 @@ FROM month_n_retention
 
 {% /row %}
 
-{% /accordion_item %}
-
-{% accordion_item title="Nordea NO" icon="globe" %}
+### Nordea NO
 
 {% row %}
 
@@ -516,9 +516,7 @@ FROM month_n_retention
 
 {% /row %}
 
-{% /accordion_item %}
-
-{% accordion_item title="Nordea DK" icon="globe" %}
+### Nordea DK
 
 {% row %}
 
@@ -590,9 +588,11 @@ FROM month_n_retention
 
 {% /row %}
 
-{% accordion single=true %}
+{% accordion %}
 
-{% accordion_item title="ICA Banken SE" icon="globe" %}
+{% accordion_item title="Per Bank Details" icon="trending-up" %}
+
+### ICA Banken SE
 
 {% row %}
 
@@ -626,9 +626,7 @@ FROM month_n_retention
 
 {% /row %}
 
-{% /accordion_item %}
-
-{% accordion_item title="Länsförsäkringar Östgöta SE" icon="globe" %}
+### Länsförsäkringar Östgöta SE
 
 {% row %}
 
