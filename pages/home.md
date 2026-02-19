@@ -72,7 +72,7 @@ ORDER BY cohort_date
 # KPI summary
 
 {% big_value
-    text_size="2xl"
+    text_size="3xl"
     title="Monthly Active Children"
     data="current_active_children"
     value="sum(active_children)"
@@ -80,9 +80,10 @@ ORDER BY cohort_date
 /%}
 
 {% big_value
-    text_size="2xl"
-    title="New Parents (Last 30d)"
+    text_size="3xl"
+    title="New Parents"
     data="new_parents_30d"
+    info="New Parent Last 30 days"
     value="sum(new_parent_profiles)"
     fmt="num0"
     sparkline={
@@ -92,16 +93,20 @@ ORDER BY cohort_date
 /%}
 
 {% big_value
-    text_size="2xl"
-    title="Parent Conversion Rate (30d Avg)"
+    text_size="3xl"
+    title="Parent Conversion Rate"
     data="conversion_rate_30d"
     value="sum(converted_30d) / sum(signups)"
     fmt="pct1"
     info="Weighted average: total conversions / total signups over last 30 days of completed periods"
+    sparkline={
+        type="line"
+        x="signup_date"
+    }
 /%}
 
 {% big_value
-    text_size="2xl"
+    text_size="3xl"
     title="M1 Retention (Completed)"
     data="m1_retention_complete"
     value="sum(active_users) / sum(cohort_size)"
