@@ -422,9 +422,45 @@ FROM month_n_retention
 
 ## Nordea
 
-{% stack %}
+### Overall Nordea
 
-### Nordea SE
+{% row %}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="New Parent Profiles"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    title="Parent Conversion Rate (30d)"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% /row %}
+
+### Per Branch (Accordion)
+
+{% accordion single=true %}
+
+{% accordion_item title="Nordea SE" icon="globe" %}
 
 {% row %}
 
@@ -458,7 +494,9 @@ FROM month_n_retention
 
 {% /row %}
 
-### Nordea NO
+{% /accordion_item %}
+
+{% accordion_item title="Nordea NO" icon="globe" %}
 
 {% row %}
 
@@ -492,7 +530,9 @@ FROM month_n_retention
 
 {% /row %}
 
-### Nordea DK
+{% /accordion_item %}
+
+{% accordion_item title="Nordea DK" icon="globe" %}
 
 {% row %}
 
@@ -526,7 +566,51 @@ FROM month_n_retention
 
 {% /row %}
 
-{% /stack %}
+{% /accordion_item %}
+
+{% /accordion %}
+
+### Per Branch (Input Tabs)
+
+{% input_tabs
+    id="nordea_branch"
+    data="new_parents"
+    value_column="bank_identifier"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    initial_value="nordea-se"
+/%}
+
+{% row %}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="New Parents"
+    where="bank_identifier = {{nordea_branch}}"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    title="Conversion (30d)"
+    where="bank_identifier = {{nordea_branch}}"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% /row %}
 
 ## Other Banks
 
