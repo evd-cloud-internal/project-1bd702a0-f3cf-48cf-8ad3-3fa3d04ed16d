@@ -412,8 +412,6 @@ FROM month_n_retention
 
 ## Nordea
 
-### Overall Nordea
-
 {% row %}
 
 {% line_chart
@@ -445,8 +443,6 @@ FROM month_n_retention
 /%}
 
 {% /row %}
-
-### Per Branch (Accordion)
 
 {% accordion single=true %}
 
@@ -560,48 +556,6 @@ FROM month_n_retention
 
 {% /accordion %}
 
-### Per Branch (Input Tabs)
-
-{% input_tabs
-    id="nordea_branch"
-    data="new_parents"
-    value_column="bank_identifier"
-    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
-    initial_value="nordea-se"
-/%}
-
-{% row %}
-
-{% line_chart
-    data="new_parents"
-    x="signup_date"
-    y="sum(new_parent_profiles)"
-    y_fmt="num0"
-    title="New Parents"
-    where="bank_identifier = {{nordea_branch}}"
-    date_grain={{date_grain}}
-    date_range={
-        date="signup_date"
-        range="{{time_range}}"
-    }
-/%}
-
-{% line_chart
-    data="conversion_rate"
-    x="signup_date"
-    y="sum(converted_30d) / sum(signups)"
-    y_fmt="pct1"
-    title="Conversion (30d)"
-    where="bank_identifier = {{nordea_branch}}"
-    date_grain={{date_grain}}
-    date_range={
-        date="signup_date"
-        range="{{time_range}}"
-    }
-/%}
-
-{% /row %}
-
 ## Other Banks
 
 {% row %}
@@ -611,7 +565,6 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    series="bank_identifier"
     title="New Parent Profiles"
     where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
     date_grain={{date_grain}}
@@ -626,7 +579,6 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    series="bank_identifier"
     title="Parent Conversion Rate (30d)"
     where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
     date_grain={{date_grain}}
@@ -637,6 +589,82 @@ FROM month_n_retention
 /%}
 
 {% /row %}
+
+{% accordion single=true %}
+
+{% accordion_item title="ICA Banken SE" icon="globe" %}
+
+{% row %}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="New Parents"
+    where="bank_identifier = 'icabanken-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    title="Conversion (30d)"
+    where="bank_identifier = 'icabanken-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% /row %}
+
+{% /accordion_item %}
+
+{% accordion_item title="Länsförsäkringar Östgöta SE" icon="globe" %}
+
+{% row %}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="New Parents"
+    where="bank_identifier = 'lansforsakringar-ostgota-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    title="Conversion (30d)"
+    where="bank_identifier = 'lansforsakringar-ostgota-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% /row %}
+
+{% /accordion_item %}
+
+{% /accordion %}
 
 # Child retention
 
