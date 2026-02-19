@@ -494,6 +494,9 @@ WHERE month_number BETWEEN 1 AND 3
 ORDER BY month_number
 ```
 # Child retention
+
+{% row  %}
+
 {% repeat id="month_num" data="available_periods" column="month_number" %}
 
 {% combo_chart
@@ -519,6 +522,10 @@ ORDER BY month_number
 
 
 {% /repeat %}
+
+{% /row %}
+
+
 
 
 
