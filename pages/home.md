@@ -236,43 +236,24 @@ ORDER BY active_children DESC
 {% /accordion %}
 
 # Active users
-    {% combo_chart
-        data="active_users"
-        x="period_end_date"
-        title="Active users"
-        date_grain={{date_grain}}
-        date_range={
-            date="period_end_date"
-            range="{{time_range}}"
-        }
-    %}
 
-{% line
+{% line_chart
+    data="active_children"
+    x="period_end_date"
     y="sum(active_children)"
-    options={
-        width=3
+    date_grain={{date_grain}}
+    where="period_type = UPPER({{date_grain}})"
+    date_range={
+        range={{time_range}}
+        date="period_end_date"
     }
-    data_labels={
-        position="left"
-    }
-    fmt="num2k"
-/%}
-{% line
-    y="sum(active_families)"
-    options={
-        opacity=0.4
-        markers={
-            shape="none"
-        }
-        type="dashed"
-    }
-    fmt="num2k"
-    data_labels={
-        position="above"
-    }
-/%}
 
-{% /combo_chart %}
+    line_options={
+        markers={
+            shape="circle"
+        }
+    }
+/%}
 
 {% row  %}
 
