@@ -429,9 +429,8 @@ FROM month_n_retention
     x="signup_date"
     y="sum(new_parent_profiles)"
     y_fmt="num0"
-    series="bank_identifier"
-    title="New Parent Profiles"
-    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    title="Nordea SE — New Parents"
+    where="bank_identifier = 'nordea-se'"
     date_grain={{date_grain}}
     date_range={
         date="signup_date"
@@ -444,9 +443,64 @@ FROM month_n_retention
     x="signup_date"
     y="sum(converted_30d) / sum(signups)"
     y_fmt="pct1"
-    series="bank_identifier"
-    title="Parent Conversion Rate (30d)"
-    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    title="Nordea SE — Conversion (30d)"
+    where="bank_identifier = 'nordea-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="Nordea NO — New Parents"
+    where="bank_identifier = 'nordea-no'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    title="Nordea NO — Conversion (30d)"
+    where="bank_identifier = 'nordea-no'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="new_parents"
+    x="signup_date"
+    y="sum(new_parent_profiles)"
+    y_fmt="num0"
+    title="Nordea DK — New Parents"
+    where="bank_identifier = 'nordea-dk'"
+    date_grain={{date_grain}}
+    date_range={
+        date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="conversion_rate"
+    x="signup_date"
+    y="sum(converted_30d) / sum(signups)"
+    y_fmt="pct1"
+    title="Nordea DK — Conversion (30d)"
+    where="bank_identifier = 'nordea-dk'"
     date_grain={{date_grain}}
     date_range={
         date="signup_date"
