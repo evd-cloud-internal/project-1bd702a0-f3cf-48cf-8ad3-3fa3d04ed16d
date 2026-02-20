@@ -173,7 +173,16 @@ SELECT
     period_end_date,
     bank_identifier,
     active_children,
-    toString(active_children) as label
+    toString(active_children) as label,
+    CASE bank_identifier
+        WHEN 'abn-amro-nl' THEN 'abn'
+        WHEN 'nordea-se' THEN 'se'
+        WHEN 'nordea-no' THEN 'no'
+        WHEN 'nordea-dk' THEN 'dk'
+        WHEN 'icabanken-se' THEN 'ica'
+        WHEN 'lansforsakringar-ostgota-se' THEN 'LF'
+        ELSE bank_identifier
+    END as short_name
 FROM ranked
 WHERE rn = 1
 ORDER BY bank_identifier
@@ -367,6 +376,19 @@ ORDER BY active_children DESC
             position="top"
         }
     /%}
+    {% reference_point
+        data="abn_last_point"
+        x="period_end_date"
+        y="active_children"
+        label="short_name"
+        color="white"
+        symbol_options={
+            shape="none"
+        }
+        label_options={
+            position="bottom"
+        }
+    /%}
 {% /line_chart %}
 
 {% line_chart
@@ -400,6 +422,19 @@ ORDER BY active_children DESC
             position="top"
         }
     /%}
+    {% reference_point
+        data="nordea_last_points"
+        x="period_end_date"
+        y="active_children"
+        label="short_name"
+        color="white"
+        symbol_options={
+            shape="none"
+        }
+        label_options={
+            position="bottom"
+        }
+    /%}
 {% /line_chart %}
 
 {% line_chart
@@ -431,6 +466,19 @@ ORDER BY active_children DESC
         }
         label_options={
             position="top"
+        }
+    /%}
+    {% reference_point
+        data="other_last_points"
+        x="period_end_date"
+        y="active_children"
+        label="short_name"
+        color="white"
+        symbol_options={
+            shape="none"
+        }
+        label_options={
+            position="bottom"
         }
     /%}
 {% /line_chart %}
