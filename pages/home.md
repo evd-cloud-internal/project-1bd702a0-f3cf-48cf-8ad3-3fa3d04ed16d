@@ -82,6 +82,8 @@ ORDER BY cohort_date
     fmt="num2k"
 /%}
 
+{% row  %}
+
 {% big_value
     text_size="3xl"
     title="New Parents"
@@ -109,6 +111,10 @@ ORDER BY cohort_date
     info="Month 1 retention rate across all completed cohort periods"
 /%}
 
+{% /row %}
+
+
+
 ```sql active_users
 SELECT
     c.period_end_date,
@@ -133,6 +139,17 @@ LEFT JOIN (
     GROUP BY period_end_date, bank_identifier
 ) f ON (c.period_end_date = f.period_end_date AND c.bank_identifier = f.bank_identifier)
 ORDER BY c.period_end_date
+```
+
+```sql active_children_last_point
+SELECT
+    period_end_date,
+    sum(active_children) as active_children
+FROM active_children
+WHERE period_type = UPPER({{date_grain}})
+GROUP BY period_end_date
+ORDER BY period_end_date DESC
+LIMIT 1
 ```
 
 ```sql bank_kpis
@@ -239,19 +256,43 @@ ORDER BY active_children DESC
 
 {% line_chart
     data="active_children"
+    title="Monthly Active Children"
+    subtitle="Children active in the last 30 days"
     x="period_end_date"
     y="sum(active_children)"
+    y_fmt="num0"
+    y_axis_options={
+        title_position="side"
+        labels=true
+    }
+    
     date_grain={{date_grain}}
     where="period_type = UPPER({{date_grain}})"
     date_range={
         range={{time_range}}
         date="period_end_date"
     }
-    data_labels={
-        position="above"
+    chart_options={
+        top_padding=20
     }
-
-/%}
+%}
+    {% reference_point
+        data="active_children_last_point"
+        x="period_end_date"
+        y="active_children"
+        label="active_children"
+        label_options={
+            position="top"
+            fmt="num2k"
+            color="#ffffff"
+        }
+        symbol_options={
+            shape="circle"
+            size=10
+            color=""
+        }
+    /%}
+{% /line_chart %}
 
 {% row  %}
 
@@ -259,13 +300,20 @@ ORDER BY active_children DESC
     data="active_children"
     x="period_end_date"
     y="sum(active_children)"
-    title="ABN Amro"
+    title="ABN AMRO - Active users"
+    subtitle="ABN AMRO Children active in the last 30 days "
     where="bank_identifier = 'abn-amro-nl' AND period_type = UPPER({{date_grain}})"
     y_fmt="num2k"
     date_grain={{date_grain}}
     date_range={
         date="period_end_date"
         range="{{time_range}}"
+    }
+    line_options={
+        markers={
+            shape="circle"
+            size=4
+        }
     }
 /%}
 
