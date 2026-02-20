@@ -175,12 +175,12 @@ SELECT
     active_children,
     toString(active_children) as label,
     CASE bank_identifier
-        WHEN 'abn-amro-nl' THEN 'abn'
-        WHEN 'nordea-se' THEN 'SE'
-        WHEN 'nordea-no' THEN 'NO'
-        WHEN 'nordea-dk' THEN 'DK'
-        WHEN 'icabanken-se' THEN 'ica'
-        WHEN 'lansforsakringar-ostgota-se' THEN 'LF'
+        WHEN 'abn-amro-nl' THEN '(ABN)'
+        WHEN 'nordea-se' THEN '(SE)'
+        WHEN 'nordea-no' THEN '(NO)'
+        WHEN 'nordea-dk' THEN '(DK)'
+        WHEN 'icabanken-se' THEN '(ICA)'
+        WHEN 'lansforsakringar-ostgota-se' THEN '(LF)'
         ELSE bank_identifier
     END as short_name
 FROM ranked
@@ -326,36 +326,33 @@ ORDER BY active_children DESC
     subtitle="Children active in the last 30 days"
     x="period_end_date"
     y="sum(active_children)"
-    y_fmt="num0"
+    
     y_axis_options={
         title_position="side"
         labels=true
+
     }
-    
+    y_fmt="num1k"
     date_grain={{date_grain}}
     where="period_type = UPPER({{date_grain}})"
     date_range={
         range={{time_range}}
         date="period_end_date"
     }
-    chart_options={
-        top_padding=20
-    }
+    
 %}
     {% reference_point
         data="active_children_last_point"
         x="period_end_date"
         y="active_children"
         label="label"
-        color="#75C6FF"
         label_options={
             position="top"
-            color="#75C6FF"
+            fmt="num1k"
         }
         symbol_options={
             shape="circle"
             size=10
-            color="#75C6FF"
         }
     /%}
 {% /line_chart %}
@@ -381,15 +378,12 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
-        color="#75C6FF"
         symbol_options={
             shape="circle"
             size=8
-            color="#75C6FF"
         }
         label_options={
-            position="left"
-            color="#75C6FF"
+            position="top"
             fmt="num2k"
         }
     /%}
@@ -400,13 +394,6 @@ ORDER BY active_children DESC
     x="period_end_date"
     y="sum(active_children)"
     series="bank_identifier"
-      chart_options={
-        series_colors={
-            "nordea-no"="#FFCDB9"
-            "nordea-se"="#FFDF6F"
-            "nordea-dk"="#75C6FF"
-        }
-    }
     title="Nordea"
     where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk') AND period_type = UPPER({{date_grain}})"
     y_fmt="num2k"
@@ -421,15 +408,13 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
-        color="#75C6FF"
         symbol_options={
             shape="circle"
             size=8
-            color="#75C6FF"
         }
         label_options={
             position="top"
-            color="#75C6FF"
+            fmt="num2k"
         }
     /%}
     {% reference_point
@@ -437,13 +422,11 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="#75C6FF"
         symbol_options={
             size=0
         }
         label_options={
-            position="left"
-            color="#75C6FF"
+            position="bottom"
         }
     /%}
     {% reference_point
@@ -451,15 +434,13 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
-        color="#FFCDB9"
         symbol_options={
             shape="circle"
             size=8
-            color="#FFCDB9"
         }
         label_options={
             position="top"
-            color="#FFCDB9"
+            fmt="num2k"
         }
     /%}
     {% reference_point
@@ -467,13 +448,12 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="#FFCDB9"
         symbol_options={
             size=0
         }
         label_options={
-            position="left"
-            color="#FFCDB9"
+            position="bottom"
+            fmt="num2k"
         }
     /%}
     {% reference_point
@@ -481,15 +461,14 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
-        color="#FFDF6F"
         symbol_options={
             shape="circle"
             size=8
-            color="#FFDF6F"
         }
         label_options={
             position="top"
-            color="#FFDF6F"
+            fmt="num2k"
+            color="white"
         }
     /%}
     {% reference_point
@@ -497,13 +476,12 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="#FFDF6F"
         symbol_options={
             size=0
         }
         label_options={
-            position="left"
-            color="#FFDF6F"
+            position="bottom"
+            
         }
     /%}
 {% /line_chart %}
