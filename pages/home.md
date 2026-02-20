@@ -386,8 +386,9 @@ ORDER BY active_children DESC
             size=0
         }
         label_options={
-            position="left"
+            position="right"
         }
+
     /%}
 {% /line_chart %}
 
