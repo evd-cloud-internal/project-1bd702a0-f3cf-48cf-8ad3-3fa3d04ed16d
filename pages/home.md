@@ -383,10 +383,10 @@ ORDER BY active_children DESC
         label="short_name"
         color="white"
         symbol_options={
-            shape="none"
+            size=0
         }
         label_options={
-            position="bottom"
+            position="left"
         }
     /%}
 {% /line_chart %}
@@ -429,7 +429,7 @@ ORDER BY active_children DESC
         label="short_name"
         color="white"
         symbol_options={
-            shape="none"
+            size=0
         }
         label_options={
             position="bottom"
@@ -475,7 +475,7 @@ ORDER BY active_children DESC
         label="short_name"
         color="white"
         symbol_options={
-            shape="none"
+            size=0
         }
         label_options={
             position="bottom"
