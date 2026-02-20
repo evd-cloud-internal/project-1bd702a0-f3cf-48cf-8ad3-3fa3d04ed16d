@@ -144,12 +144,54 @@ ORDER BY c.period_end_date
 ```sql active_children_last_point
 SELECT
     period_end_date,
-    sum(active_children) as active_children
-FROM active_children
-WHERE period_type = UPPER({{date_grain}})
-GROUP BY period_end_date
-ORDER BY period_end_date DESC
-LIMIT 1
+    active_children,
+    toString(active_children) as label
+FROM (
+    SELECT
+        period_end_date,
+        sum(active_children) as active_children
+    FROM active_children
+    WHERE period_type = UPPER({{date_grain}})
+    GROUP BY period_end_date
+    ORDER BY period_end_date DESC
+    LIMIT 1
+)
+```
+
+```sql active_users_last_points
+WITH ranked AS (
+    SELECT
+        period_end_date,
+        bank_identifier,
+        sum(active_children) as active_children,
+        ROW_NUMBER() OVER (PARTITION BY bank_identifier ORDER BY period_end_date DESC) as rn
+    FROM active_children
+    WHERE period_type = UPPER({{date_grain}})
+    GROUP BY period_end_date, bank_identifier
+)
+SELECT
+    period_end_date,
+    bank_identifier,
+    active_children,
+    bank_identifier || ': ' || toString(active_children) as label
+FROM ranked
+WHERE rn = 1
+ORDER BY bank_identifier
+```
+
+```sql abn_last_point
+SELECT * FROM {{active_users_last_points}}
+WHERE bank_identifier = 'abn-amro-nl'
+```
+
+```sql nordea_last_points
+SELECT * FROM {{active_users_last_points}}
+WHERE bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')
+```
+
+```sql other_last_points
+SELECT * FROM {{active_users_last_points}}
+WHERE bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')
 ```
 
 ```sql bank_kpis
@@ -280,16 +322,13 @@ ORDER BY active_children DESC
         data="active_children_last_point"
         x="period_end_date"
         y="active_children"
-        label="active_children"
+        label="label"
         label_options={
             position="top"
-            fmt="num2k"
-            color="#ffffff"
         }
         symbol_options={
             shape="circle"
             size=10
-            color=""
         }
     /%}
 {% /line_chart %}
@@ -301,7 +340,7 @@ ORDER BY active_children DESC
     x="period_end_date"
     y="sum(active_children)"
     title="ABN AMRO - Active users"
-    subtitle="ABN AMRO Children active in the last 30 days "
+    subtitle="ABN AMRO Children active in the last 30 days"
     where="bank_identifier = 'abn-amro-nl' AND period_type = UPPER({{date_grain}})"
     y_fmt="num2k"
     date_grain={{date_grain}}
@@ -309,13 +348,24 @@ ORDER BY active_children DESC
         date="period_end_date"
         range="{{time_range}}"
     }
-    line_options={
-        markers={
-            shape="circle"
-            size=4
-        }
+    chart_options={
+        top_padding=20
     }
-/%}
+%}
+    {% reference_point
+        data="abn_last_point"
+        x="period_end_date"
+        y="active_children"
+        label="label"
+        symbol_options={
+            shape="circle"
+            size=8
+        }
+        label_options={
+            position="top"
+        }
+    /%}
+{% /line_chart %}
 
 {% line_chart
     data="active_children"
@@ -330,7 +380,24 @@ ORDER BY active_children DESC
         date="period_end_date"
         range="{{time_range}}"
     }
-/%}
+    chart_options={
+        top_padding=20
+    }
+%}
+    {% reference_point
+        data="nordea_last_points"
+        x="period_end_date"
+        y="active_children"
+        label="label"
+        symbol_options={
+            shape="circle"
+            size=8
+        }
+        label_options={
+            position="top"
+        }
+    /%}
+{% /line_chart %}
 
 {% line_chart
     data="active_children"
@@ -345,7 +412,24 @@ ORDER BY active_children DESC
         date="period_end_date"
         range="{{time_range}}"
     }
-/%}
+    chart_options={
+        top_padding=20
+    }
+%}
+    {% reference_point
+        data="other_last_points"
+        x="period_end_date"
+        y="active_children"
+        label="label"
+        symbol_options={
+            shape="circle"
+            size=8
+        }
+        label_options={
+            position="top"
+        }
+    /%}
+{% /line_chart %}
 
 {% /row %}
 
