@@ -173,7 +173,7 @@ SELECT
     period_end_date,
     bank_identifier,
     active_children,
-    bank_identifier || ': ' || toString(active_children) as label
+    toString(active_children) as label
 FROM ranked
 WHERE rn = 1
 ORDER BY bank_identifier
@@ -323,6 +323,7 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
+        color="white"
         label_options={
             position="top"
         }
@@ -357,6 +358,7 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
+        color="white"
         symbol_options={
             shape="circle"
             size=8
@@ -389,6 +391,7 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
+        color="white"
         symbol_options={
             shape="circle"
             size=8
@@ -421,6 +424,7 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
+        color="white"
         symbol_options={
             shape="circle"
             size=8
