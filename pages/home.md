@@ -512,11 +512,9 @@ ORDER BY active_children DESC
         symbol_options={
             shape="circle"
             size=8
-            color="#75C6FF"
         }
         label_options={
             position="top"
-            color="#75C6FF"
         }
     /%}
     {% reference_point
@@ -524,13 +522,11 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="#75C6FF"
         symbol_options={
             size=0
         }
         label_options={
             position="bottom"
-            color="#75C6FF"
         }
     /%}
     {% reference_point
@@ -538,15 +534,12 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
-        color="#FFCDB9"
         symbol_options={
             shape="circle"
             size=8
-            color="#FFCDB9"
         }
         label_options={
             position="top"
-            color="#FFCDB9"
         }
     /%}
     {% reference_point
@@ -554,13 +547,11 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="#FFCDB9"
         symbol_options={
             size=0
         }
         label_options={
             position="bottom"
-            color="#FFCDB9"
         }
     /%}
 {% /line_chart %}
@@ -579,6 +570,16 @@ FROM new_partner_parent_profiles
 SELECT
     *
 FROM parent_conversion
+```
+
+```sql new_active_children_trend
+SELECT
+    date,
+    bank_identifier,
+    sum(new_active_children) as new_active_children
+FROM new_active_children
+GROUP BY date, bank_identifier
+ORDER BY date
 ```
 
 ```sql cohort_retention
@@ -624,6 +625,19 @@ FROM month_n_retention
     }
 /%}
 
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="New Active Children"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
+        range="{{time_range}}"
+    }
+/%}
+
 {% /row %}
 
 {% row %}
@@ -656,6 +670,20 @@ FROM month_n_retention
     }
 /%}
 
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="ABN Amro - New Active Children"
+    where="bank_identifier = 'abn-amro-nl'"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
+        range="{{time_range}}"
+    }
+/%}
+
 {% /row %}
 
 {% row %}
@@ -684,6 +712,20 @@ FROM month_n_retention
     date_grain={{date_grain}}
     date_range={
         date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="Nordea - New Active Children"
+    where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
         range="{{time_range}}"
     }
 /%}
@@ -724,6 +766,20 @@ FROM month_n_retention
     }
 /%}
 
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="Nordea SE - New Active Children"
+    where="bank_identifier = 'nordea-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
+        range="{{time_range}}"
+    }
+/%}
+
 {% /row %}
 
 {% row %}
@@ -752,6 +808,20 @@ FROM month_n_retention
     date_grain={{date_grain}}
     date_range={
         date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="Nordea NO - New Active Children"
+    where="bank_identifier = 'nordea-no'"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
         range="{{time_range}}"
     }
 /%}
@@ -788,6 +858,20 @@ FROM month_n_retention
     }
 /%}
 
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="Nordea DK - New Active Children"
+    where="bank_identifier = 'nordea-dk'"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
+        range="{{time_range}}"
+    }
+/%}
+
 {% /row %}
 
 {% /accordion_item %}
@@ -820,6 +904,20 @@ FROM month_n_retention
     date_grain={{date_grain}}
     date_range={
         date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="Other Banks - New Active Children"
+    where="bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
         range="{{time_range}}"
     }
 /%}
@@ -862,6 +960,20 @@ FROM month_n_retention
     }
 /%}
 
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="ICA Banken - New Active Children"
+    where="bank_identifier = 'icabanken-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
+        range="{{time_range}}"
+    }
+/%}
+
 {% /row %}
 
 
@@ -891,6 +1003,20 @@ FROM month_n_retention
     date_grain={{date_grain}}
     date_range={
         date="signup_date"
+        range="{{time_range}}"
+    }
+/%}
+
+{% line_chart
+    data="new_active_children_trend"
+    x="date"
+    y="sum(new_active_children)"
+    y_fmt="num0"
+    title="Länsförsäkringar Östgöta - New Active Children"
+    where="bank_identifier = 'lansforsakringar-ostgota-se'"
+    date_grain={{date_grain}}
+    date_range={
+        date="date"
         range="{{time_range}}"
     }
 /%}
