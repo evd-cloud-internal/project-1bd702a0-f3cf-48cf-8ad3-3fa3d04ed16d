@@ -176,9 +176,9 @@ SELECT
     toString(active_children) as label,
     CASE bank_identifier
         WHEN 'abn-amro-nl' THEN 'abn'
-        WHEN 'nordea-se' THEN 'se'
-        WHEN 'nordea-no' THEN 'no'
-        WHEN 'nordea-dk' THEN 'dk'
+        WHEN 'nordea-se' THEN 'SE'
+        WHEN 'nordea-no' THEN 'NO'
+        WHEN 'nordea-dk' THEN 'DK'
         WHEN 'icabanken-se' THEN 'ica'
         WHEN 'lansforsakringar-ostgota-se' THEN 'LF'
         ELSE bank_identifier
@@ -375,9 +375,6 @@ ORDER BY active_children DESC
         date="period_end_date"
         range="{{time_range}}"
     }
-    chart_options={
-        top_padding=20
-    }
 %}
     {% reference_point
         data="abn_last_point"
@@ -391,22 +388,9 @@ ORDER BY active_children DESC
             color="#75C6FF"
         }
         label_options={
-            position="top"
+            position="left"
             color="#75C6FF"
-        }
-    /%}
-    {% reference_point
-        data="abn_last_point"
-        x="period_end_date"
-        y="active_children"
-        label="short_name"
-        color="#75C6FF"
-        symbol_options={
-            size=0
-        }
-        label_options={
-            position="right"
-            color="#75C6FF"
+            fmt="num2k"
         }
     /%}
 {% /line_chart %}
@@ -458,7 +442,7 @@ ORDER BY active_children DESC
             size=0
         }
         label_options={
-            position="bottom"
+            position="left"
             color="#75C6FF"
         }
     /%}
@@ -488,7 +472,7 @@ ORDER BY active_children DESC
             size=0
         }
         label_options={
-            position="bottom"
+            position="left"
             color="#FFCDB9"
         }
     /%}
@@ -518,7 +502,7 @@ ORDER BY active_children DESC
             size=0
         }
         label_options={
-            position="bottom"
+            position="left"
             color="#FFDF6F"
         }
     /%}
