@@ -193,14 +193,29 @@ SELECT * FROM {{active_users_last_points}}
 WHERE bank_identifier = 'abn-amro-nl'
 ```
 
-```sql nordea_last_points
+```sql nordea_dk_last
 SELECT * FROM {{active_users_last_points}}
-WHERE bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk')
+WHERE bank_identifier = 'nordea-dk'
 ```
 
-```sql other_last_points
+```sql nordea_no_last
 SELECT * FROM {{active_users_last_points}}
-WHERE bank_identifier NOT IN ('abn-amro-nl', 'nordea-se', 'nordea-no', 'nordea-dk')
+WHERE bank_identifier = 'nordea-no'
+```
+
+```sql nordea_se_last
+SELECT * FROM {{active_users_last_points}}
+WHERE bank_identifier = 'nordea-se'
+```
+
+```sql ica_last
+SELECT * FROM {{active_users_last_points}}
+WHERE bank_identifier = 'icabanken-se'
+```
+
+```sql lf_last
+SELECT * FROM {{active_users_last_points}}
+WHERE bank_identifier = 'lansforsakringar-ostgota-se'
 ```
 
 ```sql bank_kpis
@@ -332,13 +347,15 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
-        color="white"
+        color="#75C6FF"
         label_options={
             position="top"
+            color="#75C6FF"
         }
         symbol_options={
             shape="circle"
             size=10
+            color="#75C6FF"
         }
     /%}
 {% /line_chart %}
@@ -367,13 +384,15 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="label"
-        color="white"
+        color="#75C6FF"
         symbol_options={
             shape="circle"
             size=8
+            color="#75C6FF"
         }
         label_options={
             position="top"
+            color="#75C6FF"
         }
     /%}
     {% reference_point
@@ -381,14 +400,14 @@ ORDER BY active_children DESC
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="white"
+        color="#75C6FF"
         symbol_options={
             size=0
         }
         label_options={
             position="right"
+            color="#75C6FF"
         }
-
     /%}
 {% /line_chart %}
 
@@ -397,6 +416,13 @@ ORDER BY active_children DESC
     x="period_end_date"
     y="sum(active_children)"
     series="bank_identifier"
+      chart_options={
+        series_colors={
+            "nordea-no"="#FFCDB9"
+            "nordea-se"="#FFDF6F"
+            "nordea-dk"="#75C6FF"
+        }
+    }
     title="Nordea"
     where="bank_identifier IN ('nordea-se', 'nordea-no', 'nordea-dk') AND period_type = UPPER({{date_grain}})"
     y_fmt="num2k"
@@ -405,35 +431,95 @@ ORDER BY active_children DESC
         date="period_end_date"
         range="{{time_range}}"
     }
-    chart_options={
-        top_padding=20
-    }
 %}
     {% reference_point
-        data="nordea_last_points"
+        data="nordea_dk_last"
         x="period_end_date"
         y="active_children"
         label="label"
-        color="white"
+        color="#75C6FF"
         symbol_options={
             shape="circle"
             size=8
+            color="#75C6FF"
         }
         label_options={
             position="top"
+            color="#75C6FF"
         }
     /%}
     {% reference_point
-        data="nordea_last_points"
+        data="nordea_dk_last"
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="white"
+        color="#75C6FF"
         symbol_options={
             size=0
         }
         label_options={
             position="bottom"
+            color="#75C6FF"
+        }
+    /%}
+    {% reference_point
+        data="nordea_no_last"
+        x="period_end_date"
+        y="active_children"
+        label="label"
+        color="#FFCDB9"
+        symbol_options={
+            shape="circle"
+            size=8
+            color="#FFCDB9"
+        }
+        label_options={
+            position="top"
+            color="#FFCDB9"
+        }
+    /%}
+    {% reference_point
+        data="nordea_no_last"
+        x="period_end_date"
+        y="active_children"
+        label="short_name"
+        color="#FFCDB9"
+        symbol_options={
+            size=0
+        }
+        label_options={
+            position="bottom"
+            color="#FFCDB9"
+        }
+    /%}
+    {% reference_point
+        data="nordea_se_last"
+        x="period_end_date"
+        y="active_children"
+        label="label"
+        color="#FFDF6F"
+        symbol_options={
+            shape="circle"
+            size=8
+            color="#FFDF6F"
+        }
+        label_options={
+            position="top"
+            color="#FFDF6F"
+        }
+    /%}
+    {% reference_point
+        data="nordea_se_last"
+        x="period_end_date"
+        y="active_children"
+        label="short_name"
+        color="#FFDF6F"
+        symbol_options={
+            size=0
+        }
+        label_options={
+            position="bottom"
+            color="#FFDF6F"
         }
     /%}
 {% /line_chart %}
@@ -456,30 +542,63 @@ ORDER BY active_children DESC
     }
 %}
     {% reference_point
-        data="other_last_points"
+        data="ica_last"
         x="period_end_date"
         y="active_children"
         label="label"
-        color="white"
+        color="#75C6FF"
         symbol_options={
             shape="circle"
             size=8
+            color="#75C6FF"
         }
         label_options={
             position="top"
+            color="#75C6FF"
         }
     /%}
     {% reference_point
-        data="other_last_points"
+        data="ica_last"
         x="period_end_date"
         y="active_children"
         label="short_name"
-        color="white"
+        color="#75C6FF"
         symbol_options={
             size=0
         }
         label_options={
             position="bottom"
+            color="#75C6FF"
+        }
+    /%}
+    {% reference_point
+        data="lf_last"
+        x="period_end_date"
+        y="active_children"
+        label="label"
+        color="#FFCDB9"
+        symbol_options={
+            shape="circle"
+            size=8
+            color="#FFCDB9"
+        }
+        label_options={
+            position="top"
+            color="#FFCDB9"
+        }
+    /%}
+    {% reference_point
+        data="lf_last"
+        x="period_end_date"
+        y="active_children"
+        label="short_name"
+        color="#FFCDB9"
+        symbol_options={
+            size=0
+        }
+        label_options={
+            position="bottom"
+            color="#FFCDB9"
         }
     /%}
 {% /line_chart %}
